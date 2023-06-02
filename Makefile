@@ -2,8 +2,8 @@
 VERSION = 5
 PATCHLEVEL = 10
 SUBLEVEL = 52
-EXTRAVERSION =
-NAME = Dare mighty things
+EXTRAVERSION = -1.0.0
+NAME = FireFLY CP Kernel
 
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
