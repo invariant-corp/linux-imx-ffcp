@@ -112,6 +112,15 @@
 };
 
 &iomuxc {
+	// Debug LED GPIO pins
+	pinctrl_gpio3: gpio3grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SAI5_RXFS__GPIO3_IO19	0x0 // GPSLock_LED
+			MX8MP_IOMUXC_SAI5_RXD0__GPIO3_IO21	0x0 // StreamEN_LED
+			MX8MP_IOMUXC_SAI5_RXC__GPIO3_IO20	0x0 // NewData_LED_1
+			MX8MP_IOMUXC_NAND_DATA03__GPIO3_IO09	0x0 // SOM_DONE
+		>;
+	};
 
 	// Debug comms pins
 	pinctrl_uart1: uart1grp {
