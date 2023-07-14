@@ -89,6 +89,18 @@
 	};
 };
 
+// i2c bus used for SoH voltage / current sensors
+&i2c5 {
+	clock-frequency = <100000>;
+	pinctrl-names = "default", "gpio";
+	pinctrl-0 = <&pinctrl_i2c5>;
+	pinctrl-1 = <&pinctrl_i2c5_gpio>;
+	scl-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>;
+	sda-gpios = <&gpio3 27 GPIO_ACTIVE_HIGH>;
+	status = "okay";
+};
+
+
 // Peripheral used to set the CDCEL913 clock synthesizer
 &i2c6 {
 	clock-frequency = <50000>;
@@ -149,6 +161,20 @@
 		fsl,pins = <
 			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX				0x40
 			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX				0x40
+		>;
+	};
+
+	// SOH I2C pins
+	pinctrl_i2c5: i2c5grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_HDMI_DDC_SCL__I2C5_SCL			0x400001c2
+			MX8MP_IOMUXC_HDMI_DDC_SDA__I2C5_SDA			0x400001c2
+		>;
+	};
+	pinctrl_i2c5_gpio: i2c5gpiogrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_HDMI_DDC_SCL__GPIO3_IO26				0x1c2
+			MX8MP_IOMUXC_HDMI_DDC_SDA__GPIO3_IO27				0x1c2
 		>;
 	};
 
