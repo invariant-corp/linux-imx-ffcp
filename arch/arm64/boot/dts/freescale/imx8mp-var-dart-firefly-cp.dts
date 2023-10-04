@@ -111,6 +111,47 @@
 	scl-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>;
 	sda-gpios = <&gpio3 27 GPIO_ACTIVE_HIGH>;
 	status = "okay";
+
+	// Battery Voltage/Total Current
+	ltc2945_batt: ltc2945_batt@69 {
+		compatible = "adi,ltc2945";
+		reg = <0x69>;
+		shunt-resistor-micro-ohms = <20000>;
+	};
+
+	// Voltage/Current Front End Supply (5V)
+	ltc2945_frontend_5v: ltc2945_frontend_5v@67 {
+		compatible = "adi,ltc2945";
+		reg = <0x67>;
+		shunt-resistor-micro-ohms = <20000>;
+	};
+
+	// Voltage/Current to SoM (3.8V)
+	ltc2945_som_3v8: ltc2945_som_3v8@6c {
+		compatible = "adi,ltc2945";
+		reg = <0x6c>;
+		shunt-resistor-micro-ohms = <20000>;
+	};
+
+	// Voltage/Current 3.3V Rail
+	ltc2945_3v3: ltc2945_3v3@6f {
+		compatible = "adi,ltc2945";
+		reg = <0x6f>;
+		shunt-resistor-micro-ohms = <20000>;
+	};
+
+	// 5V Voltage/Current to GPS modules
+	ltc2945_gps_5v: ltc2945_gps_5v@6a {
+		compatible = "adi,ltc2945";
+		reg = <0x6a>;
+		shunt-resistor-micro-ohms = <20000>;
+	};
+
+	// Internal Temperature
+	mcp9808_temp: mcp9808_temp@1f {
+		compatible = "jedec,jc-42.4-temp";
+		reg = <0x1f>;
+	};
 };
 
 
