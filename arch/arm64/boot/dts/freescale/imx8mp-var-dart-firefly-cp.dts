@@ -45,6 +45,19 @@
 	status = "disabled";
 };
 
+// i2c bus for the PTN5150 USB-C CC Logic chip
+&i2c2 {
+	status = "okay";
+	extcon_ptn5150: typec@3d {
+		compatible = "nxp,ptn5150";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ptn5150>;
+		reg = <0x3d>;
+		int-gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
+		status = "okay";
+	};
+};
+
 &i2c3 {
 	status = "disabled";
 };
@@ -123,7 +136,37 @@
 	status = "disabled";
 };
 
+&usb3_phy0 {
+	fsl,phy-tx-vref-tune = <0xe>;
+	fsl,phy-tx-preemp-amp-tune = <3>;
+	fsl,phy-tx-vboost-level = <5>;
+	fsl,phy-comp-dis-tune = <7>;
+	fsl,pcs-tx-deemph-3p5db = <0x21>;
+	fsl,phy-pcs-tx-swing-full = <0x7f>;
+	status = "okay";
+};
+
+&usb3_0 {
+	status = "okay";
+};
+
+&usb_dwc3_0 {
+	dr_mode = "otg";
+	hnp-disable;
+	srp-disable;
+	adp-disable;
+	extcon = <&extcon_ptn5150>;
+	status = "okay";
+};
+
 &iomuxc {
+	// PTN5150 interrupt pin
+	pinctrl_ptn5150: ptn5150grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_NAND_DATA01__GPIO3_IO07	0x10 // int-gpio
+		>;
+	};
+
 	// Debug LED and power cycle GPIO pins
 	pinctrl_gpio3: gpio3grp {
 		fsl,pins = <
