@@ -1,0 +1,233 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2019 NXP
+ * Copyright 2020-2021 Variscite Ltd.
+ */
+
+#include "imx8mp-var-dart-firefly.dts"
+#include "imx8mp-var-common-m7.dtsi"
+
+/ {
+	model = "Variscite DART-MX8M-PLUS M7 on FireFLY CP";
+};
+
+// Used to turn off main processor messages so that the M7 alone has UART
+#define MCU_DEBUG 0
+
+&uart1 {
+#if MCU_DEBUG
+	status = "disabled";
+#else
+	status = "okay";
+#endif
+};
+
+// GPS Base UART
+&uart2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart2>;
+	status = "okay";
+};
+
+// GPS Rover UART
+&uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart4>;
+	status = "okay";
+};
+
+/*
+ * ATTENTION: M7 may use IPs like below
+ * ECSPI1, I2C3, UART3, PWM3, SDMA1, FLEXCAN1
+ */
+
+&uart3 {
+	status = "disabled";
+};
+
+&i2c3 {
+	status = "disabled";
+};
+
+&ecspi1 {
+	status = "disabled";
+};
+
+&ecspi3 {
+	status = "disabled";
+};
+
+// Per Variscite, this needs to remain disabled for use with the modded SoMs
+&wm8904 {
+	status = "disabled";
+};
+
+&sdma1 {
+	status = "disabled";
+};
+
+
+&flexcan1 {
+	status = "disabled";
+};
+
+&aud2htx {
+	status = "disabled";
+};
+
+&i2c4 {
+	status = "okay";
+
+	eeprom@50 {
+		compatible = "atmel,24c02";
+		reg = <0x50>;
+	};
+
+	eeprom@58 {
+		compatible = "atmel,24mac402";
+		reg = <0x58>;
+	};
+};
+
+&i2c5 {
+	pinctrl-names = "default", "gpio";
+	pinctrl-0 = <&pinctrl_i2c5>;
+	pinctrl-1 = <&pinctrl_i2c5_gpio>;
+	scl-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>;
+	sda-gpios = <&gpio5 02 GPIO_ACTIVE_HIGH>;
+	status = "okay";
+
+   battery-voltage@69 {
+      compatible = "adi,ltc2945";
+      reg = <0x69>;
+      shunt-resistor-micro-ohms = <20000>;
+   };
+
+   front-end-voltage@67 {
+      compatible = "adi,ltc2945";
+      reg = <0x67>;
+      shunt-resistor-micro-ohms = <20000>;
+   };
+
+   som-voltage@6c {
+      compatible = "adi,ltc2945";
+      reg = <0x6C>;
+      shunt-resistor-micro-ohms = <20000>;
+   };
+
+   rail@6f {
+      compatible = "adi,ltc2945";
+      reg = <0x6F>;
+      shunt-resistor-micro-ohms = <20000>;
+   };
+
+   gps-modules@6a {
+      compatible = "adi,ltc2945";
+      reg = <0x6A>;
+      shunt-resistor-micro-ohms = <20000>;
+   };
+
+   temp-sensor@1f {
+      compatible = "jedec,jc-42.4-temp";
+      reg = <0x1F>;
+   };
+
+   accelerometer@1d {
+      compatible = "st,lis2hh12";
+      reg = <0x1D>;
+   };
+
+};
+
+// Peripheral used to set the CDCEL913 clock synthesizer
+&i2c6 {
+	clock-frequency = <50000>;
+	pinctrl-names = "default", "gpio";
+	pinctrl-0 = <&pinctrl_i2c6>;
+	pinctrl-1 = <&pinctrl_i2c6_gpio>;
+	scl-gpios = <&gpio3 28 GPIO_ACTIVE_HIGH>;
+	sda-gpios = <&gpio3 29 GPIO_ACTIVE_HIGH>;
+	status = "okay";
+
+   vxco-clock@68 {
+      compatible = "dallas,ds1308";
+      reg = <0x68>;
+   };
+
+};
+
+
+// Keep this disabled to prevent kernel failures with external interrupts for the M7
+&sai2 {
+	status = "disabled";
+};
+
+// Disabled because there's a GPIO4 pin used as an interrupt on the MCU
+&gpio4 {
+	status = "disabled";
+};
+
+&iomuxc {
+	// Debug LED GPIO pins
+	pinctrl_gpio3: gpio3grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SAI5_RXFS__GPIO3_IO19	0x0 // GPSLock_LED
+			MX8MP_IOMUXC_SAI5_RXD0__GPIO3_IO21	0x0 // StreamEN_LED
+			MX8MP_IOMUXC_SAI5_RXC__GPIO3_IO20	0x0 // NewData_LED_1
+			MX8MP_IOMUXC_NAND_DATA03__GPIO3_IO09	0x0 // SOM_DONE
+		>;
+	};
+
+	// Debug comms pins
+	pinctrl_uart1: uart1grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SAI2_RXC__UART1_DCE_RX				0x40
+			MX8MP_IOMUXC_SAI2_RXFS__UART1_DCE_TX			0x40
+		>;
+	};
+	
+	// GPS Base pins
+	pinctrl_uart2: uart2grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_SAI3_TXFS__UART2_DCE_RX			0x40
+			MX8MP_IOMUXC_SAI3_TXC__UART2_DCE_TX				0x40
+		>;
+	};
+
+	// GPS Rover pins
+	pinctrl_uart4: uart4grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX				0x40
+			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX				0x40
+		>;
+	};
+
+	pinctrl_i2c5: i2c5grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_HDMI_DDC_SCL__I2C5_SCL                     0x400001c2
+			MX8MP_IOMUXC_HDMI_DDC_SDA__I2C5_SDA                     0x400001c2
+		>;
+	};
+
+	pinctrl_i2c5_gpio: i2c5gpiogrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_HDMI_DDC_SCL__GPIO3_IO26                   0x1c2
+			MX8MP_IOMUXC_HDMI_DDC_SDA__GPIO3_IO27                   0x1c2
+		>;
+	};
+
+	// CDCEL I2C pins
+	pinctrl_i2c6: i2c6grp {
+		fsl,pins = <
+			MX8MP_IOMUXC_HDMI_CEC__I2C6_SCL				0x400001c2
+			MX8MP_IOMUXC_HDMI_HPD__I2C6_SDA				0x400001c2
+		>;
+	};
+
+	pinctrl_i2c6_gpio: i2c6gpiogrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_HDMI_CEC__GPIO3_IO28				0x1c2
+			MX8MP_IOMUXC_HDMI_HPD__GPIO3_IO29				0x1c2
+		>;
+	};
+};
