@@ -15,7 +15,7 @@
       status = "okay";
       pinctrl-names = "default";
       pinctrl-0 = <&pinctrl_rover_pps>;
-      compatible = "xlnx,firefly-pps-1.00.a";
+      compatible = "xlnx,firefly-pps-2.00.a";
       gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
       interrupts = <7 IRQ_TYPE_EDGE_RISING>;
       interrupt-parent = <&gpio1>;
