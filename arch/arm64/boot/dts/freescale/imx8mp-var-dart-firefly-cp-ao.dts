@@ -9,6 +9,19 @@
 
 / {
 	model = "Variscite DART-MX8M-PLUS M7 on FireFLY CP";
+
+   pps_rover
+   {
+      status = "okay";
+      pinctrl-names = "default";
+      pinctrl-0 = <&pinctrl_rover_pps>;
+      compatible = "xlnx,firefly-pps-1.00.a";
+      gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
+      interrupts = <7 IRQ_TYPE_EDGE_RISING>;
+      interrupt-parent = <&gpio1>;
+      line-name = "rover_pps";
+   };
+
 };
 
 // Used to turn off main processor messages so that the M7 alone has UART
@@ -201,6 +214,13 @@
 			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX				0x40
 		>;
 	};
+
+   // GPS PPS
+   pinctrl_rover_pps: roverpps {
+      fsl,pins = <
+         MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07             0xc0  
+      >;
+   };
 
 	pinctrl_i2c5: i2c5grp {
 		fsl,pins = <
