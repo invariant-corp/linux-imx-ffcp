@@ -16,9 +16,9 @@
       pinctrl-names = "default";
       pinctrl-0 = <&pinctrl_base_pps>;
       compatible = "xlnx,firefly-pps-2.00.a";
-      gpios = <&gpio5 26 GPIO_ACTIVE_HIGH>;
-      interrupts = <26 IRQ_TYPE_EDGE_RISING>;
-      interrupt-parent = <&gpio5>;
+      gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
+      interrupts = <7 IRQ_TYPE_EDGE_RISING>;
+      interrupt-parent = <&gpio1>;
       line-name = "base_pps";
    };
 
@@ -218,7 +218,7 @@
    // GPS PPS
    pinctrl_base_pps: basepps {
       fsl,pins = <
-         MX8MP_IOMUXC_UART3_RXD__GPIO5_IO26             0xc0  
+         MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07             0xc0  
       >;
    };
 
