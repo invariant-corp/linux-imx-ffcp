@@ -399,6 +399,12 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-dart-1.x-sonata.dtb \
 	imx8mp-var-dart-1.x-sonata-basler-isp0.dtb \
 	imx8mp-var-dart-1.x-sonata-m7.dtb
 
+# FireFLY CP (Invariant). The -1.x composite is for DART-MX8M-PLUS 1.x SOMs
+# (BCM43xx WiFi/BT); U-Boot findfdt selects it from the SOM EEPROM.
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-dart-firefly-cp-ao.dtb
+imx8mp-var-dart-1.x-firefly-cp-ao-dtbs := imx8mp-var-dart-firefly-cp-ao.dtb imx8mp-var-dart-1.x.dtbo
+dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-dart-1.x-firefly-cp-ao.dtb
+
 dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-dart-wbe-sonata.dtb \
 	imx8mp-var-dart-wbe-sonata-basler-isi0-m7.dtb \
 	imx8mp-var-dart-wbe-sonata-basler-isi0.dtb \

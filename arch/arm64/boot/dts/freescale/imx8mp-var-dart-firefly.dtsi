@@ -1,0 +1,96 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * FireFLY Comprehensive Platform (CP) carrier for DART-MX8M-PLUS
+ *
+ * The CP carrier is derived from the Variscite Sonata (formerly
+ * DT8MCustomBoard) carrier. Start from the Sonata description and drop or
+ * disable what the CP does not have, so that Variscite updates to the
+ * Sonata DTS keep applying.
+ *
+ * Copyright 2019 NXP
+ * Copyright 2020-2026 Variscite Ltd.
+ * Copyright 2023-2026 Invariant Corporation
+ */
+
+#include "imx8mp-var-dart-sonata.dts"
+
+/ {
+	model = "FireFLY Comprehensive Platform (CP)";
+	compatible = "invariant,firefly-cp",
+		     "variscite,var-dart-mx8mp",
+		     "fsl,imx8mp";
+
+	/delete-node/ sound-hdmi;
+	/delete-node/ sound-xcvr;
+
+	/* USB OTG role from the ID pin (replaces the Sonata PTN5150) */
+	extcon_usb1: extcon-usb1 {
+		compatible = "linux,extcon-usb-gpio";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_extcon>;
+		id-gpio = <&gpio1 10 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&i2c2 {
+	/delete-node/ touchscreen@38;
+	/delete-node/ typec@3d;
+};
+
+/* Sonata-only I2C devices */
+&pca9534 {
+	status = "disabled";
+};
+
+&st33ktpm2xi2c {
+	status = "disabled";
+};
+
+&usb_dwc3_0 {
+	extcon = <&extcon_usb1>;
+	/delete-property/ usb-role-switch;
+	/delete-node/ port;
+};
+
+/* No display or HDMI audio; the HDMI pads are reused for I2C5/I2C6 */
+&hdmi {
+	status = "disabled";
+};
+
+&hdmi_pavi {
+	status = "disabled";
+};
+
+&hdmiphy {
+	status = "disabled";
+};
+
+&lcdif2 {
+	status = "disabled";
+};
+
+&lcdif3 {
+	status = "disabled";
+};
+
+&ldb {
+	status = "disabled";
+};
+
+&ldb_phy {
+	status = "disabled";
+};
+
+&xcvr {
+	status = "disabled";
+};
+
+&pcie_phy {
+	status = "disabled";
+};
+
+&iomuxc {
+	/* Drop the HDMI pad hog; those pads are muxed as I2C5/I2C6 */
+	/delete-property/ pinctrl-names;
+	/delete-property/ pinctrl-0;
+};
