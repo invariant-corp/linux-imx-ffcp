@@ -37,6 +37,19 @@
 	/delete-node/ typec@3d;
 };
 
+/* FireFLY does not use the SOM WiFi/BT module (IW612 on 2.x, BCM43xx on 1.x) */
+&usdhc1 {
+	status = "disabled";
+};
+
+&wifi_pwrseq {
+	status = "disabled";
+};
+
+&bluetooth_iw61x {
+	status = "disabled";
+};
+
 /* Sonata-only I2C devices */
 &pca9534 {
 	status = "disabled";

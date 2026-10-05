@@ -58,11 +58,6 @@
 	status = "okay";
 };
 
-// No Bluetooth on UART4; it carries the GPS rover
-&bluetooth_iw61x {
-	status = "disabled";
-};
-
 /*
  * ATTENTION: M7 may use IPs like below
  * ECSPI1, I2C3, UART3, PWM3, SDMA1, FLEXCAN1
