@@ -108,6 +108,22 @@
 };
 
 /*
+ * No CAN on the CP. FlexCAN1 would also claim SAI2_RXC, the console RX pad,
+ * and FlexCAN2 the SAI2_MCLK/SAI2_TXD0 pads.
+ */
+&flexcan1 {
+	status = "disabled";
+};
+
+&flexcan2 {
+	status = "disabled";
+};
+
+&can0 {
+	status = "disabled";
+};
+
+/*
  * Single Ethernet port: EQOS with the SOM's ADIN1300. The FEC and its PHY on
  * the EQOS MDIO bus are Sonata-only; with FEC enabled it registers first and
  * takes eth0, while FireFLY expects the EQOS port as eth0.
