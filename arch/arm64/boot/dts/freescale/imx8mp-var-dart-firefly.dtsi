@@ -59,6 +59,70 @@
 	status = "disabled";
 };
 
+/*
+ * The CP has no Sonata PCA6408 I/O expanders, so nothing wired through them
+ * (keys, cameras, PCIe reset, second Ethernet PHY reset) can work.
+ */
+&pca6408_1 {
+	status = "disabled";
+};
+
+&pca6408_2 {
+	status = "disabled";
+};
+
+&{/gpio-keys} {
+	status = "disabled";
+};
+
+&ov5640_mipi0 {
+	status = "disabled";
+};
+
+&ov5640_mipi1 {
+	status = "disabled";
+};
+
+&mipi_csi_0 {
+	status = "disabled";
+};
+
+&mipi_csi_1 {
+	status = "disabled";
+};
+
+&isi_0 {
+	status = "disabled";
+};
+
+&isi_1 {
+	status = "disabled";
+};
+
+&cameradev {
+	status = "disabled";
+};
+
+&pcie {
+	status = "disabled";
+};
+
+/*
+ * Single Ethernet port: EQOS with the SOM's ADIN1300. The FEC and its PHY on
+ * the EQOS MDIO bus are Sonata-only; with FEC enabled it registers first and
+ * takes eth0, while FireFLY expects the EQOS port as eth0.
+ */
+&fec {
+	status = "disabled";
+	/delete-property/ phy-handle;
+};
+
+&eqos {
+	mdio {
+		/delete-node/ ethernet-phy@1;
+	};
+};
+
 &usb_dwc3_0 {
 	extcon = <&extcon_usb1>;
 	/delete-property/ usb-role-switch;
